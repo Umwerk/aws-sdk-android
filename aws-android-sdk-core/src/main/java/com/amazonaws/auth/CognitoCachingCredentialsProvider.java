@@ -452,8 +452,10 @@ public class CognitoCachingCredentialsProvider
             }
         }
 
-        saveCredentials(sessionCredentials,
-                getSessionCredentitalsExpiration().getTime());
+        if (sessionCredentials != null) {
+            saveCredentials(sessionCredentials,
+                    getSessionCredentitalsExpiration().getTime());
+		}
 
         return sessionCredentials;
     }
@@ -461,8 +463,10 @@ public class CognitoCachingCredentialsProvider
     @Override
     public void refresh() {
         super.refresh();
-        saveCredentials(sessionCredentials,
-                getSessionCredentitalsExpiration().getTime());
+        if (sessionCredentials != null) {
+            saveCredentials(sessionCredentials,
+                    getSessionCredentitalsExpiration().getTime());
+		}
     }
 
     @Override
