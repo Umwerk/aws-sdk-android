@@ -54,6 +54,14 @@ import java.util.concurrent.ExecutionException;
  * handle Pinpoint notifications.
  */
 public class NotificationClient {
+	
+	/**
+	 * workaround field for case where on android 5.0 and upwards the notification 
+	 * icon is not showing the right icon and also it strips the icon of any color so we 
+	 * can not use app icon and we need a way how to define what icon should be used
+	 */
+	public static int notificationSmallIconId = 0;
+	
     /**
      * Intent Key for GCM bundle.
      */
@@ -461,8 +469,14 @@ public class NotificationClient {
         final String activityId = campaignAttributes.get(CAMPAIGN_ACTIVITY_ID_ATTRIBUTE_KEY);
 
         final int requestID = (campaignId + ":" + activityId + ":" + System.currentTimeMillis()).hashCode();
-
-        final int iconResId = getNotificationIconResourceId(pushBundle.getString(NOTIFICATION_ICON_PUSH_KEY));
+        
+        int iconResId = 0;
+        if (notificationSmallIconId != 0) {
+			iconResId = notificationSmallIconId;
+		} else {
+			iconResId = getNotificationIconResourceId(pushBundle.getString(NOTIFICATION_ICON_PUSH_KEY));
+		}
+        
         if (iconResId == 0) {
             return false;
         }
